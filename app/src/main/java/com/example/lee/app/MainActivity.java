@@ -62,8 +62,7 @@ public class MainActivity extends FragmentActivity implements
         /*新建Tabspec选项卡并设置Tab菜单栏的内容和绑定对应的Fragment*/
         for (int i = 0; i < count; i++) {
             // 给每个Tab按钮设置标签、图标和文字
-            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(textViewArray[i])
-                    .setIndicator(getTabItemView(i));
+            TabHost.TabSpec tabSpec = mTabHost.newTabSpec(textViewArray[i]).setIndicator(getTabItemView(i));
             // 将Tab按钮添加进Tab选项卡中，并绑定Fragment
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
             mTabHost.setTag(i);

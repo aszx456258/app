@@ -39,7 +39,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class add extends Activity {
-    private Button b_date;
+    private Button b_date,save;
+    TextView data;
     Calendar c = Calendar.getInstance();
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
@@ -53,41 +54,81 @@ public class add extends Activity {
         c.get(Calendar.MONTH);
         c.get(Calendar.DAY_OF_MONTH);
         b_date = (Button) findViewById(R.id.btt);
+        data = (TextView)findViewById(R.id.date);
+        SharedPreferences prefs =getApplicationContext().getSharedPreferences("drug",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        String longtime = prefs.getString("longtime","null");
+        if(longtime.equals("null")){
+            data.setText("時間");
+        }
+        else
+        {
+            data.setText(longtime);
+        }
         b_date.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                setAlarmDate();
+                setAlarmTime();
             }
         });
-    }
-
-    private void setAlarmDate() {
-
-        final Calendar currentDate = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this, new DatePickerDialog.OnDateSetListener() {
+        save = (Button) findViewById(R.id.set);
+        save.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onDateSet(DatePicker view, int year,
-                                  int monthOfYear, int dayOfMonth) {
+            public void onClick(View v) {
+                Activity myActivity=(Activity)(v.getContext()); // all views have a reference to their context
+                SharedPreferences prefs =myActivity.getSharedPreferences("drug",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                int plus = prefs.getInt("plus",-1);
+                if(plus==0){
+                    int drug = prefs.getInt("can",0);
+                    int count = prefs.getInt("count",0);
+                    String longTime = prefs.getString("longtime","");
+                    Intent intent = new Intent();
+                    intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
+                    PendingIntent pi = PendingIntent.getActivity(add.this, drug, intent, 0);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP,
+                            c.getTimeInMillis(), pi);
 
-                c.set(Calendar.YEAR, year);
-                c.set(Calendar.MONTH, monthOfYear);
-                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                setAlarmTime(year,monthOfYear,dayOfMonth);
+                    Log.i("TimeInMillis", c.getTimeInMillis()+"");
+                    // 显示闹铃设置成功的提示信息
+                    Toast.makeText(add.this,"闹铃设置成功啦", Toast.LENGTH_SHORT).show();
+                    saveAlarmList(longTime,drug,count);
+                    editor.putInt("plus",1);
+                    editor.putInt("already",1);
+                    editor.putString("longtime","null");
+                    editor.commit();
+                }
             }
-        }, currentDate.get(Calendar.YEAR),
-                currentDate.get(Calendar.MONTH),
-                currentDate.get(Calendar.DAY_OF_MONTH));
-
-        datePickerDialog.show();
+        });
 
     }
+//    private void setAlarmDate() {
+//
+//        final Calendar currentDate = Calendar.getInstance();
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(
+//                this, new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year,
+//                                  int monthOfYear, int dayOfMonth) {
+//
+//                c.set(Calendar.YEAR, year);
+//                c.set(Calendar.MONTH, monthOfYear);
+//                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//                setAlarmTime(year,monthOfYear,dayOfMonth);
+//            }
+//        }, currentDate.get(Calendar.YEAR),
+//                currentDate.get(Calendar.MONTH),
+//                currentDate.get(Calendar.DAY_OF_MONTH));
+//
+//        datePickerDialog.show();
+//
+//    }
 
     /**
      * 设置闹铃时间
      * */
-    private void setAlarmTime(final int year,
-                              final int monthOfYear, final int dayOfMonth) {
+    private void setAlarmTime() {
         Calendar currentTime = Calendar.getInstance();
         // 创建一个TimePickerDialog实例，并把它显示出来。
         new TimePickerDialog(this, 0, // 绑定监听器
@@ -96,10 +137,9 @@ public class add extends Activity {
                     public void onTimeSet(TimePicker tp, int hourOfDay,
                                           int minute) {
                         // 指定启动AlarmActivity组件
-                        Intent intent = new Intent();
-                        intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
+//                        Intent intent = new Intent();
+//                        intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
 
-                        // 创建PendingIntent对象
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("drug", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         int drug = pref.getInt("can", -1);
@@ -107,29 +147,37 @@ public class add extends Activity {
                         int plus = pref.getInt("plus", 1);
                         if(plus==1){
                             drug+=1;
+                            count+=1;
                         }
-                        count+=1;
-                        PendingIntent pi = PendingIntent.getActivity(add.this, drug, intent, 0);
-                        Log.i("TimeInMillis", "TimeInMillis_1"+c.getTimeInMillis()+"");
+                        // 创建PendingIntent对象
+//                        PendingIntent pi = PendingIntent.getActivity(add.this, drug, intent, 0);
+//                        Log.i("TimeInMillis", "TimeInMillis_1"+c.getTimeInMillis()+"");
                         // 根据用户选择时间来设置Calendar对象
+                        c.setTimeInMillis(System.currentTimeMillis());
                         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         c.set(Calendar.MINUTE, minute);
 
-                        String longTime = (monthOfYear+1)+"月"+dayOfMonth+"日"+" "+hourOfDay
-                                + ":" + minute;
+//                        String longTime = (monthOfYear+1)+"月"+dayOfMonth+"日"+" "+hourOfDay
+//                                + ":" + minute;
+                        String longTime = hourOfDay + ":" + minute;
+                        data.setText(longTime);
+                        editor.putInt("plus",0);
+                        editor.putInt("count",count);
+                        editor.putInt("can",drug);
+                        editor.putString("longtime",longTime);
+                        editor.commit();
                         //2016-10-25 10:44:53
 
                         // 设置AlarmManager将在Calendar对应的时间启动指定组件
                         // 设置闹钟，当前时间就唤醒
-                        AlarmManager alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-                        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                c.getTimeInMillis(), pi);
-
-
-                        Log.i("TimeInMillis", c.getTimeInMillis()+"");
-                        // 显示闹铃设置成功的提示信息
-                        Toast.makeText(add.this,"闹铃设置成功啦", Toast.LENGTH_SHORT).show();
-                        saveAlarmList(longTime,drug,count);
+//                        AlarmManager alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
+//                        alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pi);
+//
+//
+//                        Log.i("TimeInMillis", c.getTimeInMillis()+"");
+//                        // 显示闹铃设置成功的提示信息
+//                        Toast.makeText(add.this,"闹铃设置成功啦", Toast.LENGTH_SHORT).show();
+//                        saveAlarmList(longTime,drug,count);
                     }
                 }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
                 .get(Calendar.MINUTE), true).show();

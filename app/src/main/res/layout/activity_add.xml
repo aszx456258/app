@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:gravity="center"
-            android:text="日期" />
+            android:text="時間" />
 
         <Button
             android:id="@+id/btt"

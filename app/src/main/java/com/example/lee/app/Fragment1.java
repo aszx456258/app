@@ -159,8 +159,10 @@ public class Fragment1 extends Fragment
                     public void onClick(View v) {
                         Activity myActivity=(Activity)(v.getContext()); // all views have a reference to their context
                         SharedPreferences prefs =myActivity.getSharedPreferences("drug",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
                         int count = pref.getInt("count",0);
-                        if(count>count_all){
+                        int already = pref.getInt("already",0);
+                        if(count>count_all && already == 1){
                             GoodsEntity goodsEntity=new GoodsEntity();
                             String index = Integer.toString(count-1);
                             goodsEntity.setGoodsName(pref.getString("name"+index,""));
@@ -168,6 +170,8 @@ public class Fragment1 extends Fragment
                             goodsEntity.setPosition(pref.getInt("position"+index,0));
                             goodsEntityList.add(goodsEntity);
                             count_all=count;
+                            editor.putInt("already",0);
+                            editor.commit();
                             initRecyclerView();
                         }
 
