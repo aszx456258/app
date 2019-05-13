@@ -20,65 +20,91 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="190dp"
         android:orientation="horizontal"
         android:paddingTop="50dp">
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="296dp"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
+            android:background="@android:color/holo_orange_dark"
             android:gravity="center"
-            android:text="時間" />
+            android:text="時間"
+            android:textColor="@android:color/background_light"
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/btt"
-            android:layout_width="100dp"
+            android:layout_width="125dp"
             android:layout_height="match_parent"
-            android:background="@android:drawable/ic_menu_more" />
+            android:background="@android:color/holo_orange_dark"
+            android:paddingRight="0dp"
+            android:text="▼"
+            android:textColor="@android:color/background_light"
+            android:textSize="50sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="190dp"
         android:orientation="horizontal"
         android:paddingTop="50dp">
 
         <TextView
             android:id="@+id/med_name"
-            android:layout_width="339dp"
+            android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/holo_blue_bright"
             android:gravity="center"
-            android:text="藥物種類" />
+            android:text="藥物種類"
+            android:textColor="@android:color/background_light"
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/med"
             android:layout_width="125dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_bright"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:text="▼"
+            android:textColor="@android:color/background_light"
+            android:textSize="50sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/l3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="取消" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
 
         <Button
             android:id="@+id/set"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="儲存" />
+            android:background="#07125c"
+            android:text="儲存"
+            android:textColor="@android:color/background_light"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/cancle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="#07125c"
+            android:text="取消"
+            android:textColor="@android:color/background_light"
+            android:textSize="30sp" />
     </LinearLayout>
 
 </LinearLayout>

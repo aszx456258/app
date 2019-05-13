@@ -40,7 +40,7 @@
 //                if (user != null) {
 //                    // User is signed in
 //                    Log.d("TAG",user.getUid());
-//                    startActivity(new Intent(MainActivity.this,ShowData.class));
+//                    startActivity(new Intent(this,ShowData.class));
 //                } else {
 //                    // User is signed out
 //                    Log.d("Tag","user ==null");
@@ -67,7 +67,7 @@
 //                        });
 //            }
 //            if (view.getId()==R.id.btnregister){
-//                startActivity(new Intent(MainActivity.this,Register.class));
+//                startActivity(new Intent(this,Register.class));
 //            }
 //        }
 //    };
