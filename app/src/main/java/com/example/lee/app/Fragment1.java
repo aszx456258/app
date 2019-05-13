@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -101,31 +103,33 @@ import static android.content.Context.MODE_PRIVATE;
 public class Fragment1 extends Fragment
 {
     private static  final  String KEY_ALARM_LIST="alarmList";
-    private View view;
-    public RecyclerView mCollectRecyclerView;
-    private ArrayList<GoodsEntity> goodsEntityList = new ArrayList<GoodsEntity>();
-    private CollectRecycleAdapter mCollectRecyclerAdapter;
+    public static View view;
+    public static RecyclerView mCollectRecyclerView;
+    public static ArrayList<GoodsEntity> goodsEntityList = new ArrayList<GoodsEntity>();
+    public static CollectRecycleAdapter mCollectRecyclerAdapter;
     private Button img,f5;
     private ArrayAdapter<AlarmData> adapter;
     private AlarmManager alarmManager;
     int count_all=0;
+    public static Context context = null;
 //    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        View view = inflater.inflate(R.layout.fragment_item1, null);
         view = inflater.inflate(R.layout.fragment_item1, container, false);
+        context = getActivity();
         //对recycleview进行配置
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.clock);
         final SharedPreferences pref = this.getActivity().getSharedPreferences("drug",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         img = (Button) view.findViewById(R.id.add);
-        f5 = (Button)view.findViewById(R.id.re);
-        int count = pref.getInt("count",0);
-        if(count>0){
+//        f5 = (Button)view.findViewById(R.id.re);
+        int drug = pref.getInt("can",0);
+        if(drug>0){
             initData();
             initRecyclerView();
-            count_all = count;
+//            count_all = count;
         }
         img.setOnClickListener(
                 new View.OnClickListener() {
@@ -153,33 +157,33 @@ public class Fragment1 extends Fragment
 
                 }
         );
-        f5.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Activity myActivity=(Activity)(v.getContext()); // all views have a reference to their context
-                        SharedPreferences prefs =myActivity.getSharedPreferences("drug",Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        int count = pref.getInt("count",0);
-                        int already = pref.getInt("already",0);
-                        if(count>count_all && already == 1){
-                            GoodsEntity goodsEntity=new GoodsEntity();
-                            String index = Integer.toString(count-1);
-                            goodsEntity.setGoodsName(pref.getString("name"+index,""));
-                            goodsEntity.setGoodsPrice("藥");
-                            goodsEntity.setPosition(pref.getInt("position"+index,0));
-                            goodsEntityList.add(goodsEntity);
-                            count_all=count;
-                            editor.putInt("already",0);
-                            editor.commit();
-                            initRecyclerView();
-                        }
-
-                    }
-
-
-                }
-        );
+//        f5.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Activity myActivity=(Activity)(v.getContext()); // all views have a reference to their context
+//                        SharedPreferences prefs =myActivity.getSharedPreferences("drug",Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = prefs.edit();
+//                        int count = pref.getInt("count",0);
+//                        int already = pref.getInt("already",0);
+//                        if(count>count_all && already == 1){
+//                            GoodsEntity goodsEntity=new GoodsEntity();
+//                            String index = Integer.toString(count-1);
+//                            goodsEntity.setGoodsName(pref.getString("name"+index,""));
+//                            goodsEntity.setGoodsPrice("藥");
+//                            goodsEntity.setPosition(pref.getInt("position"+index,0));
+//                            goodsEntityList.add(goodsEntity);
+//                            count_all=count;
+//                            editor.putInt("already",0);
+//                            editor.commit();
+//                            initRecyclerView();
+//                        }
+//
+//                    }
+//
+//
+//                }
+//        );
         return view;
     }
 
@@ -190,28 +194,44 @@ public class Fragment1 extends Fragment
 //        goodsEntityList.add(goodsEntity);
         SharedPreferences pref = this.getActivity().getSharedPreferences("drug",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        int count = pref.getInt("count",0);
-        for (int i =0;i<count;i++){
-            GoodsEntity goodsEntity=new GoodsEntity();
-            String index = Integer.toString(i);
-            goodsEntity.setGoodsName(pref.getString("name"+index,""));
-            goodsEntity.setGoodsPrice("藥");
-            goodsEntity.setPosition(pref.getInt("position"+index,0));
-            goodsEntityList.add(goodsEntity);
+        int drug = pref.getInt("can",0);
+        Log.d("drug",Integer.toString(drug));
+        int done = pref.getInt("do",0);
+        if(done == 0){
+            int plus = pref.getInt("plus",1);
+            if(plus==0){drug=drug-1;}
+            for (int i =0;i<drug;i++){
+                GoodsEntity goodsEntity=new GoodsEntity();
+                String index = Integer.toString(i+1);
+                String name = pref.getString("name"+index,"null");
+                if(!name.equals("null")) {
+                    goodsEntity.setGoodsName(name);
+                    goodsEntity.setGoodsPrice(pref.getString("med"+index,"null"));
+                    goodsEntity.setPosition(pref.getInt("position" + index, 0));
+                    goodsEntityList.add(goodsEntity);
+                }
+            }
+            editor.putInt("do",1);
+            editor.commit();
+        }
+        else{
+            editor.putInt("do",0);
+            editor.commit();
         }
     }
-    private void initRecyclerView() {
+    public static void initRecyclerView() {
         //获取RecyclerView
         mCollectRecyclerView=(RecyclerView)view.findViewById(R.id.clock);
         //创建adapter
-        mCollectRecyclerAdapter = new CollectRecycleAdapter(getActivity(), goodsEntityList);
+        mCollectRecyclerAdapter = new CollectRecycleAdapter(context, goodsEntityList);
         //给RecyclerView设置adapter
         mCollectRecyclerView.setAdapter(mCollectRecyclerAdapter);
         //设置layoutManager,可以设置显示效果，是线性布局、grid布局，还是瀑布流布局
         //参数是：上下文、列表方向（横向还是纵向）、是否倒叙
-        mCollectRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mCollectRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         //设置item的分割线
-        mCollectRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+        mCollectRecyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
         //RecyclerView中没有item的监听事件，需要自己在适配器中写一个监听事件的接口。参数根据自定义
     }
+
 }

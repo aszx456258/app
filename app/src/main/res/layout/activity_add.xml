@@ -33,9 +33,11 @@
         android:gravity="center"
         android:text="藥品種類選擇" />
 
-    <ListView
+    <Button
+        android:id="@+id/med"
         android:layout_width="match_parent"
-        android:layout_height="167dp" />
+        android:layout_height="125dp"
+        android:text="設置" />
 
     <LinearLayout
         android:id="@+id/l3"

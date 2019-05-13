@@ -2,6 +2,7 @@ package com.example.lee.app;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -14,7 +15,11 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
@@ -25,7 +30,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,12 +47,16 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class add extends Activity {
-    private Button b_date,save;
-    TextView data;
+    private Button b_date,save,med;
+    TextView data,med_name;
     Calendar c = Calendar.getInstance();
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
-    private ArrayList<GoodsEntity> goodsEntityList = new ArrayList<GoodsEntity>();
+    private ArrayList<GoodsEntity> goodsEntityList = Fragment1.goodsEntityList;
+    public View view = Fragment1.view;
+    public RecyclerView mCollectRecyclerView = Fragment1.mCollectRecyclerView;
+    public CollectRecycleAdapter mCollectRecyclerAdapter = Fragment1.mCollectRecyclerAdapter;
+    public Context context = Fragment1.context;
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -55,15 +67,24 @@ public class add extends Activity {
         c.get(Calendar.DAY_OF_MONTH);
         b_date = (Button) findViewById(R.id.btt);
         data = (TextView)findViewById(R.id.date);
+        med = (Button)findViewById(R.id.med);
+        med_name = (TextView)findViewById(R.id.med_name);
         SharedPreferences prefs =getApplicationContext().getSharedPreferences("drug",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         String longtime = prefs.getString("longtime","null");
+        String mn = prefs.getString("med_name","null");
         if(longtime.equals("null")){
             data.setText("時間");
         }
         else
         {
             data.setText(longtime);
+        }
+        if(mn.equals("null")){
+            med_name.setText("藥物種類");
+        }
+        else{
+            med_name.setText(mn);
         }
         b_date.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -79,10 +100,11 @@ public class add extends Activity {
                 SharedPreferences prefs =myActivity.getSharedPreferences("drug",Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 int plus = prefs.getInt("plus",-1);
-                if(plus==0){
+                String medicines = prefs.getString("med_name","null");
+                if(plus==0 && (!medicines.equals("null"))){
                     int drug = prefs.getInt("can",0);
                     int count = prefs.getInt("count",0);
-                    String longTime = prefs.getString("longtime","");
+                    String longTime = prefs.getString("longtime","123");
                     Intent intent = new Intent();
                     intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
                     PendingIntent pi = PendingIntent.getActivity(add.this, drug, intent, 0);
@@ -92,13 +114,59 @@ public class add extends Activity {
 
                     Log.i("TimeInMillis", c.getTimeInMillis()+"");
                     // 显示闹铃设置成功的提示信息
-                    Toast.makeText(add.this,"闹铃设置成功啦", Toast.LENGTH_SHORT).show();
-                    saveAlarmList(longTime,drug,count);
+                    Toast.makeText(add.this,"鬧鐘設定成功", Toast.LENGTH_SHORT).show();
+                    saveAlarmList(longTime,drug,count,medicines);
+//                    GoodsEntity goodsEntity=new GoodsEntity();
+//                    String index = Integer.toString(count-1);
+//                    goodsEntity.setGoodsName(prefs.getString("name"+index,""));
+//                    goodsEntity.setGoodsPrice("藥");
+//                    goodsEntity.setPosition(prefs.getInt("position"+index,0));
+//                    goodsEntityList.add(goodsEntity);
                     editor.putInt("plus",1);
-                    editor.putInt("already",1);
+//                    editor.putInt("already",1);
                     editor.putString("longtime","null");
                     editor.commit();
+                    initRecyclerView();
                 }
+                else if(medicines.equals("null")){
+                    Toast.makeText(add.this,"還未設定藥物", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        med.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] listItems = {"血糖藥", "心臟藥", "血壓藥", "維他命", "腸胃藥"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(add.this);
+                builder.setTitle("Choose item");
+
+                int checkedItem = 0; //this will checked the item when user open the dialog
+                final int[] which_item = {0};
+                builder.setSingleChoiceItems(listItems, checkedItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        med_name.setText(listItems[which]);
+//                        Toast.makeText(add.this, "Position: " + which + " Value: " + listItems[which], Toast.LENGTH_LONG).show();
+                        which_item[0] = which;
+                    }
+                });
+
+                builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SharedPreferences prefs =getApplication().getSharedPreferences("drug",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("med_name",listItems[which_item[0]]);
+                        med_name.setText(listItems[which_item[0]]);
+                        editor.commit();
+//                        dialog.dismiss();
+                    }
+
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -124,10 +192,44 @@ public class add extends Activity {
 //        datePickerDialog.show();
 //
 //    }
+//    private void setDialogBroadcast(){
+//        View viewDialogBroadcast;       //使用view来接入方法写出的dialog，方便相关初始化
+//        LayoutInflater inflater;        //引用自定义dialog布局
+//        inflater=LayoutInflater.from(context);
+//        viewDialogBroadcast = (LinearLayout) inflater.inflate(R.layout.dialog, null);                                           //那个layout就是我们可以dialog自定义的布局啦
+//        final RadioGroup groupBroadcast = (RadioGroup) viewDialogBroadcast.findViewById(R.id.groupBroadcast);
+//        final RadioButton rbtn_BroadcastClose = (RadioButton) viewDialogBroadcast.findViewById(R.id.rbtn_BroadcastClose);
+//        final RadioButton rbtn_BroadcastFifteen = (RadioButton) viewDialogBroadcast.findViewById(R.id.rbtn_BroadcastFifteen);
+//        final RadioButton rbtn_BroadcastThirty = (RadioButton) viewDialogBroadcast.findViewById(R.id.rbtn_BroadcastThirty);
+//        final RadioButton rbtn_BroadcastFourty = (RadioButton) viewDialogBroadcast.findViewById(R.id.rbtn_BroadcastFourty);
+//        final RadioButton rbtn_BroadcastMinute = (RadioButton) viewDialogBroadcast.findViewById(R.id.rbtn_BroadcastMinute);
+//        groupBroadcast.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                if (checkedId==rbtn_BroadcastClose.getId()){
+//
+//                }
+//                else if (checkedId==rbtn_BroadcastFifteen.getId()){
+//
+//                }
+//                else if (checkedId==rbtn_BroadcastThirty.getId()){
+//
+//                }
+//                else if (checkedId==rbtn_BroadcastFourty.getId()){
+//
+//                }
+//                else if (checkedId==rbtn_BroadcastMinute.getId()){
+//
+//                }
+//
+//            }
+//        });
+//    }
 
     /**
      * 设置闹铃时间
      * */
+
     private void setAlarmTime() {
         Calendar currentTime = Calendar.getInstance();
         // 创建一个TimePickerDialog实例，并把它显示出来。
@@ -142,7 +244,7 @@ public class add extends Activity {
 
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("drug", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
-                        int drug = pref.getInt("can", -1);
+                        int drug = pref.getInt("can", 0);
                         int count = pref.getInt("count", 0);
                         int plus = pref.getInt("plus", 1);
                         if(plus==1){
@@ -182,19 +284,34 @@ public class add extends Activity {
                 }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime
                 .get(Calendar.MINUTE), true).show();
     }
-    private void saveAlarmList(String longtime,int drug,int count){
+    private void saveAlarmList(String longtime,int drug,int count,String med){
         SharedPreferences pref = getApplicationContext().getSharedPreferences("drug", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         GoodsEntity goodsEntity=new GoodsEntity();
-        goodsEntity.setGoodsName(pref.getString("name"+Integer.toString(drug),""));
-        goodsEntity.setGoodsPrice("藥");
-        goodsEntity.setPosition(pref.getInt("position"+Integer.toString(drug),0));
+        goodsEntity.setGoodsName(longtime);
+        goodsEntity.setGoodsPrice(med);
+        goodsEntity.setPosition(drug);
         goodsEntityList.add(goodsEntity);
         editor.putString("name"+Integer.toString(drug),longtime);
-        editor.putString("med"+Integer.toString(drug),"藥");
+        editor.putString("med"+Integer.toString(drug),med);
         editor.putInt("position"+Integer.toString(drug),drug);
         editor.putInt("count",count);
         editor.putInt("can",drug);
+        editor.putString("med_name","null");
         editor.commit();
+    }
+    public  void initRecyclerView() {
+        //获取RecyclerView
+        mCollectRecyclerView=(RecyclerView)view.findViewById(R.id.clock);
+        //创建adapter
+        mCollectRecyclerAdapter = new CollectRecycleAdapter(context, goodsEntityList);
+        //给RecyclerView设置adapter
+        mCollectRecyclerView.setAdapter(mCollectRecyclerAdapter);
+        //设置layoutManager,可以设置显示效果，是线性布局、grid布局，还是瀑布流布局
+        //参数是：上下文、列表方向（横向还是纵向）、是否倒叙
+        mCollectRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        //设置item的分割线
+        mCollectRecyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
+        //RecyclerView中没有item的监听事件，需要自己在适配器中写一个监听事件的接口。参数根据自定义
     }
 }
