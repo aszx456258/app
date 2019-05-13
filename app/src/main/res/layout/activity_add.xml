@@ -7,37 +7,58 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:text="Take care of you"
+        android:textAllCaps="true"
+        android:textColor="@android:color/background_dark"
+        android:textSize="30sp"
+        android:textStyle="bold|italic" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:orientation="vertical">
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:paddingTop="50dp">
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="125dp"
+            android:layout_width="296dp"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="時間" />
 
         <Button
             android:id="@+id/btt"
-            android:layout_width="match_parent"
-            android:layout_height="125dp"
-            android:text="設置" />
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/ic_menu_more" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/med_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:text="藥品種類選擇" />
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:paddingTop="50dp">
 
-    <Button
-        android:id="@+id/med"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:text="設置" />
+        <TextView
+            android:id="@+id/med_name"
+            android:layout_width="339dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="藥物種類" />
+
+        <Button
+            android:id="@+id/med"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/l3"
