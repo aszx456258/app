@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="380dp"
+        android:layout_width="wrap_content"
         android:layout_height="34dp"
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="0dp"
@@ -14,15 +14,17 @@
 
         <TextView
             android:id="@+id/item_goods_name"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:gravity="center"
             android:layout_weight="1"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/item_goods_price"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:gravity="center"
             android:layout_weight="1"
             android:text="TextView" />
     </LinearLayout>

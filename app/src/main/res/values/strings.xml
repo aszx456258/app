@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">hi</string>
+    <string name="app_name">緊藥關頭</string>
+    <string name="title_activity_add">add</string>
+    <string name="d">設定日期</string>
+    <string name="time">time</string>
 </resources>

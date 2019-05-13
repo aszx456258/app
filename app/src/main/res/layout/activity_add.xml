@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/l1"
+    android:layout_width="match_parent"
+    android:layout_height="566dp"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteY="1dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:gravity="center"
+            android:text="日期" />
+
+        <Button
+            android:id="@+id/btt"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:text="設置" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/med_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="藥品種類選擇" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="167dp" />
+
+    <LinearLayout
+        android:id="@+id/l3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="取消" />
+
+        <Button
+            android:id="@+id/set"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="儲存" />
+    </LinearLayout>
+
+</LinearLayout>
