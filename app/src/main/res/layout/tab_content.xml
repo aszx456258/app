@@ -14,7 +14,9 @@
     <TextView
         android:id="@+id/tab_textview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
+        android:gravity="center"
         android:text=""
-        android:textColor="@drawable/selector_tab_background" />
+        android:textColor="@android:color/background_light"
+        android:textSize="20sp" />
 </LinearLayout>

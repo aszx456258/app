@@ -1,7 +1,5 @@
 package com.example.lee.app;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -66,8 +63,14 @@ public class MainActivity extends FragmentActivity implements
             // 将Tab按钮添加进Tab选项卡中，并绑定Fragment
             mTabHost.addTab(tabSpec, fragmentArray[i], null);
             mTabHost.setTag(i);
-            mTabHost.getTabWidget().getChildAt(i)
-                    .setBackgroundResource(R.drawable.selector_tab_background);//设置Tab被选中的时候颜色改变
+            if(i==0){
+                mTabHost.getTabWidget().getChildAt(i)
+                        .setBackgroundResource(R.drawable.selector_tab_background);//设置Tab被选中的时候颜色改变
+            }
+            else {
+                mTabHost.getTabWidget().getChildAt(i)
+                        .setBackgroundResource(R.drawable.select2);//设置Tab被选中的时候颜色改变
+            }
         }
     }
 
@@ -88,10 +91,10 @@ public class MainActivity extends FragmentActivity implements
         //将xml布局转换为view对象
         View view = layoutInflater.inflate(R.layout.tab_content, null);
         //利用view对象，找到布局中的组件,并设置内容，然后返回视图
-        ImageView mImageView = (ImageView) view
-                .findViewById(R.id.tab_imageview);
+//        ImageView mImageView = (ImageView) view
+//                .findViewById(R.id.tab_imageview);
         TextView mTextView = (TextView) view.findViewById(R.id.tab_textview);
-        mImageView.setBackgroundResource(imageViewArray[i]);
+//        mImageView.setBackgroundResource(imageViewArray[i]);
         mTextView.setText(textViewArray[i]);
         return view;
     }
