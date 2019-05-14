@@ -1,45 +1,27 @@
 package com.example.lee.app;
 
-import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.app.AlarmManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.content.SharedPreferences;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.lee.hi.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.FutureTask;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Carson_Ho on 16/5/23.
@@ -108,10 +90,12 @@ public class Fragment1 extends Fragment
     public static ArrayList<GoodsEntity> goodsEntityList = new ArrayList<GoodsEntity>();
     public static CollectRecycleAdapter mCollectRecyclerAdapter;
     private Button img,f5;
+    public static int inde = 0;
     private ArrayAdapter<AlarmData> adapter;
     private AlarmManager alarmManager;
     int count_all=0;
     public static Context context = null;
+    public static int re_last=8888;
 //    private RecyclerView recyclerView;
 
     @Override
@@ -157,6 +141,7 @@ public class Fragment1 extends Fragment
 
                 }
         );
+//        mCollectRecyclerView.setOnLongClickListener();
 //        f5.setOnClickListener(
 //                new View.OnClickListener() {
 //                    @Override
@@ -208,6 +193,8 @@ public class Fragment1 extends Fragment
                     goodsEntity.setGoodsName(name);
                     goodsEntity.setGoodsPrice(pref.getString("med"+index,"null"));
                     goodsEntity.setPosition(pref.getInt("position" + index, 0));
+                    goodsEntity.setIndex(inde);
+                    inde+=1;
                     goodsEntityList.add(goodsEntity);
                 }
             }
@@ -232,6 +219,39 @@ public class Fragment1 extends Fragment
         //设置item的分割线
         mCollectRecyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
         //RecyclerView中没有item的监听事件，需要自己在适配器中写一个监听事件的接口。参数根据自定义
+        mCollectRecyclerAdapter.setOnItemClickListener(new CollectRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, final GoodsEntity data) {
+                //此處進行監聽事件的業務處
+                new AlertDialog.Builder(context).setTitle("確認刪除").setMessage("是否刪除"+data.getGoodsPrice()+"鬧鐘").setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context,"刪除"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+//                       Toast.makeText(context,"刪除"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+//                        SharedPreferences prefs =getApplication().getSharedPreferences("drug",Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = prefs.edit();
+//                        int drug = prefs.getInt("can",0);
+//                        int plus = prefs.getInt("plus",1);
+//                        if(plus == 0){
+//                            drug-=1;
+//                        }
+//                        for(int i = data.index+1;i<Fragment1.inde;i++){
+//                            int will = goodsEntityList.get(i).getIndex()-1;
+//                            goodsEntityList.get(i).setIndex(will);
+//                        }
+//                        editor.putString("name"+Integer.toString(data.getPosition()),"null");
+//                        editor.commit();
+//                        Fragment1.inde-=1;
+//                        goodsEntityList.remove(data.index);
+//                        initRecyclerView();
+//                        initRecyclerView();
+                    }
+                }).show();
+//                Toast.makeText(context,"我是"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+//                goodsEntityList.remove(data.getIndex());
+            }
+        });
     }
+
 
 }

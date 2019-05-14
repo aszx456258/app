@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:background="@android:color/holo_green_light">
+    android:background="#82b366">
 
     <TextView
-        android:layout_width="346dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/New"
+        android:gravity="center_vertical"
         android:text="Take care of you"
-        android:textColor="#000000"
+        android:textAllCaps="true"
+        android:textColor="@android:color/background_dark"
         android:textSize="30sp"
-        android:textStyle="bold" />
+        android:textStyle="bold|italic" />
 
 </RelativeLayout>

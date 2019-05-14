@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/l1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/l1"
     android:layout_width="match_parent"
-    android:layout_height="566dp"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:layout_editor_absoluteY="1dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:paddingBottom="0dp"
+    android:background="@color/New"
+    tools:layout_editor_absoluteY="1dp">
+
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="@color/New"
         android:gravity="center_vertical"
         android:text="Take care of you"
         android:textAllCaps="true"
@@ -21,6 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="190dp"
+        android:background="@color/New"
         android:orientation="horizontal"
         android:paddingTop="50dp">
 
@@ -50,6 +55,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="190dp"
+        android:background="@color/New"
         android:orientation="horizontal"
         android:paddingTop="50dp">
 
@@ -82,6 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
+        android:background="@color/New"
         android:orientation="vertical"
         android:paddingTop="10dp">
 

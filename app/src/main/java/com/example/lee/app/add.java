@@ -120,7 +120,7 @@ public class add extends Activity {
                 final String[] listItems = {"血糖藥", "心臟藥", "血壓藥", "維他命", "腸胃藥"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(add.this);
-                builder.setTitle("Choose item");
+                builder.setTitle("要吃什麼藥");
 
                 int checkedItem = 0; //this will checked the item when user open the dialog
                 final int[] which_item = {0};
@@ -266,12 +266,15 @@ public class add extends Activity {
                 .get(Calendar.MINUTE), true).show();
     }
     private void saveAlarmList(String longtime,int drug,int count,String med){
+        int inde = Fragment1.inde;
         SharedPreferences pref = getApplicationContext().getSharedPreferences("drug", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         GoodsEntity goodsEntity=new GoodsEntity();
         goodsEntity.setGoodsName(longtime);
         goodsEntity.setGoodsPrice(med);
         goodsEntity.setPosition(drug);
+        goodsEntity.setIndex(inde);
+        Fragment1.inde += 1;
         goodsEntityList.add(goodsEntity);
         editor.putString("name"+Integer.toString(drug),longtime);
         editor.putString("med"+Integer.toString(drug),med);
@@ -281,7 +284,7 @@ public class add extends Activity {
         editor.putString("med_name","null");
         editor.commit();
     }
-    public  void initRecyclerView() {
+    public void initRecyclerView() {
         //获取RecyclerView
         mCollectRecyclerView=(RecyclerView)view.findViewById(R.id.clock);
         //创建adapter
@@ -294,5 +297,35 @@ public class add extends Activity {
         //设置item的分割线
         mCollectRecyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
         //RecyclerView中没有item的监听事件，需要自己在适配器中写一个监听事件的接口。参数根据自定义
+        mCollectRecyclerAdapter.setOnItemClickListener(new CollectRecycleAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, final GoodsEntity data) {
+                //此處進行監聽事件的業務處
+                new AlertDialog.Builder(context).setTitle("確認刪除").setMessage("是否刪除"+data.getGoodsPrice()+"鬧鐘").setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context,"刪除"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+                        SharedPreferences prefs =getApplication().getSharedPreferences("drug",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        int drug = prefs.getInt("can",0);
+                        int plus = prefs.getInt("plus",1);
+                        if(plus == 0){
+                            drug-=1;
+                        }
+                        for(int i = data.index+1;i<Fragment1.inde;i++){
+                            int will = goodsEntityList.get(i).getIndex()-1;
+                            goodsEntityList.get(i).setIndex(will);
+                        }
+                        editor.putString("name"+Integer.toString(data.getPosition()),"null");
+                        editor.commit();
+                        Fragment1.inde-=1;
+                        goodsEntityList.remove(data.index);
+                        initRecyclerView();
+                    }
+                }).show();
+//                Toast.makeText(context,"我是"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+//                goodsEntityList.remove(data.getIndex());
+            }
+        });
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lee.hi.R;
@@ -64,11 +63,10 @@ public class CollectRecycleAdapter extends RecyclerView.Adapter<CollectRecycleAd
 
     //自定义viewhodler
     class myViewHodler extends RecyclerView.ViewHolder {
-        private ImageView mItemGoodsImg;
         private TextView mItemGoodsName;
         private TextView mItemGoodsPrice;
 
-        public myViewHodler(View itemView) {
+        public myViewHodler(final View itemView) {
             super(itemView);
             mItemGoodsName = (TextView) itemView.findViewById(R.id.item_goods_name);
             mItemGoodsPrice = (TextView) itemView.findViewById(R.id.item_goods_price);
@@ -78,7 +76,7 @@ public class CollectRecycleAdapter extends RecyclerView.Adapter<CollectRecycleAd
                 @Override
                 public void onClick(View v) {
                     //可以选择直接在本位置直接写业务处理
-                    //Toast.makeText(context,"点击了xxx",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context,"点击"+mItemGoodsName.getText(),Toast.LENGTH_SHORT).show();
                     //此处回传点击监听事件
                     if (onItemClickListener != null) {
                         onItemClickListener.OnItemClick(v, goodsEntityList.get(getLayoutPosition()));
@@ -100,7 +98,9 @@ public class CollectRecycleAdapter extends RecyclerView.Adapter<CollectRecycleAd
          * @param data 点击的item的数据
          */
         public void OnItemClick(View view, GoodsEntity data);
+//        public void OnLongClick(View view,GoodsEntity data);
     }
+
 
     //需要外部访问，所以需要设置set方法，方便调用
     private OnItemClickListener onItemClickListener;
