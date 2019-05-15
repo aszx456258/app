@@ -43,9 +43,9 @@ public class add extends Activity {
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_add);
-        c.get(Calendar.YEAR);
-        c.get(Calendar.MONTH);
-        c.get(Calendar.DAY_OF_MONTH);
+//        c.get(Calendar.YEAR);
+//        c.get(Calendar.MONTH);
+//        c.get(Calendar.DAY_OF_MONTH);
         b_date = (Button) findViewById(R.id.btt);
         data = (TextView)findViewById(R.id.date);
         med = (Button)findViewById(R.id.med);
@@ -86,12 +86,17 @@ public class add extends Activity {
                     int drug = prefs.getInt("can",0);
                     int count = prefs.getInt("count",0);
                     String longTime = prefs.getString("longtime","123");
-                    Intent intent = new Intent();
-                    intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
-                    PendingIntent pi = PendingIntent.getActivity(add.this, drug, intent, 0);
+                    long selectTime = c.getTimeInMillis();
+                    long systemTime = System.currentTimeMillis();
+                    if(systemTime > selectTime) {
+                        c.add(Calendar.DAY_OF_MONTH, 1);
+                    }
+                    Intent intent = new Intent(add.this,AlarmReceiver.class);
+//                    intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
+                    PendingIntent pi = PendingIntent.getBroadcast(add.this, drug, intent, 0);
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP,
-                            c.getTimeInMillis(), pi);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                            c.getTimeInMillis(),(1000 * 60 * 60 * 24), pi);
 
                     Log.i("TimeInMillis", c.getTimeInMillis()+"");
                     // 显示闹铃设置成功的提示信息
@@ -222,7 +227,7 @@ public class add extends Activity {
                         // 指定启动AlarmActivity组件
 //                        Intent intent = new Intent();
 //                        intent.setAction("com.westsoft.alarmtime.ACTION");// Activity
-
+//                        c.setTimeZone(c.getTimeZone("GMT+8"));
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("drug", MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         int drug = pref.getInt("can", 0);
@@ -239,6 +244,9 @@ public class add extends Activity {
                         c.setTimeInMillis(System.currentTimeMillis());
                         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         c.set(Calendar.MINUTE, minute);
+                        c.set(Calendar.SECOND,0);
+                        c.set(Calendar.MILLISECOND,0);
+
 
 //                        String longTime = (monthOfYear+1)+"月"+dayOfMonth+"日"+" "+hourOfDay
 //                                + ":" + minute;
@@ -319,6 +327,11 @@ public class add extends Activity {
                         editor.putString("name"+Integer.toString(data.getPosition()),"null");
                         editor.commit();
                         Fragment1.inde-=1;
+                        Intent intent = new Intent(add.this, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(add.this,data.getPosition() , intent, 0);
+                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                        alarmManager.cancel(pendingIntent);
+//                        mTextView.setText("鬧鈴已取消！");
                         goodsEntityList.remove(data.index);
                         initRecyclerView();
                     }
