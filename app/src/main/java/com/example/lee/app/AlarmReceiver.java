@@ -40,6 +40,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         };
         Timer timer = new Timer();
 //        // 5秒後停止鈴聲
-        timer.schedule(task, 5000);
+        timer.schedule(task, 8000);
     }
 }

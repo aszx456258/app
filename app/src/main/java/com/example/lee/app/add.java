@@ -312,7 +312,7 @@ public class add extends Activity {
                 new AlertDialog.Builder(context).setTitle("確認刪除").setMessage("是否刪除"+data.getGoodsPrice()+"鬧鐘").setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(context,"刪除"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context,"刪除"+data.getGoodsPrice()+"鬧鐘",Toast.LENGTH_SHORT).show();
                         SharedPreferences prefs =getApplication().getSharedPreferences("drug",Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
                         int drug = prefs.getInt("can",0);
