@@ -18,7 +18,6 @@ import static android.media.RingtoneManager.TYPE_ALARM;
  */
 
 public class AlarmReceiver extends BroadcastReceiver {
-//    private MediaPlayer mediaPlayer;
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -26,6 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 //        alaramIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(alaramIntent);
         Toast.makeText(context, "你設定的鬧鈴時間到了", Toast.LENGTH_LONG).show();
+//        Log.d("ddddd","dododododod");
         Uri alarmUri= RingtoneManager.getDefaultUri(TYPE_ALARM);
 //        // 取得鈴聲
         final Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
@@ -40,6 +40,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         };
         Timer timer = new Timer();
 //        // 5秒後停止鈴聲
-        timer.schedule(task, 8000);
+        timer.schedule(task, 5000);
     }
 }

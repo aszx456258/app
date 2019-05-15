@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class add extends Activity {
-    private Button b_date,save,med;
+    private Button b_date,save,med,cancel;
     TextView data,med_name;
     Calendar c = Calendar.getInstance();
     private DatePickerDialog datePickerDialog;
@@ -49,6 +49,7 @@ public class add extends Activity {
         b_date = (Button) findViewById(R.id.btt);
         data = (TextView)findViewById(R.id.date);
         med = (Button)findViewById(R.id.med);
+        cancel = (Button)findViewById(R.id.cancle);
         med_name = (TextView)findViewById(R.id.med_name);
         SharedPreferences prefs =getApplicationContext().getSharedPreferences("drug",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -153,6 +154,21 @@ public class add extends Activity {
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs =getApplication().getSharedPreferences("drug",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("longtime","null");
+                editor.putString("med_name","null");
+                med_name.setText("藥物種類");
+                data.setText("時間");
+                editor.commit();
+//                Intent intent = new Intent();
+//                intent.setClass(add.this , MainActivity.class);
+//                startActivity(intent);
             }
         });
 

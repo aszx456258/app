@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:background="#82b366">
+    android:background="@drawable/greeen">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@color/New"
+        android:background="#d5e8d4"
         android:gravity="center_vertical"
         android:text="Take care of you"
         android:textAllCaps="true"

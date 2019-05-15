@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/New"
-    android:orientation="vertical" >
+    android:background="@drawable/greeen"
+    android:orientation="vertical">
 
     <include layout="@layout/main_top" />
 
@@ -15,10 +15,10 @@
         android:layout_weight="1" /><!--装4个Fragment-->
 
     <FrameLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone" />
 
     <!--定义FragmentTabHost控件-->
     <android.support.v4.app.FragmentTabHost

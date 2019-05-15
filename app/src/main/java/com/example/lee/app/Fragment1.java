@@ -201,8 +201,12 @@ public class Fragment1 extends Fragment
             editor.putInt("do",1);
             editor.commit();
         }
-        else{
+        else if(done==1){
             editor.putInt("do",0);
+            editor.commit();
+        }
+        else if(done==2){
+            editor.putInt("do",1);
             editor.commit();
         }
     }
