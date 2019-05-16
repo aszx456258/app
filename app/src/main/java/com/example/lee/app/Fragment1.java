@@ -2,6 +2,7 @@ package com.example.lee.app;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,11 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.lee.hi.R;
 
 import java.util.ArrayList;
+
+import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by Carson_Ho on 16/5/23.
@@ -211,6 +213,8 @@ public class Fragment1 extends Fragment
         }
     }
     public static void initRecyclerView() {
+        SharedPreferences pref = context.getSharedPreferences("drug",Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = pref.edit();
         //获取RecyclerView
         mCollectRecyclerView=(RecyclerView)view.findViewById(R.id.clock);
         //创建adapter
@@ -230,25 +234,29 @@ public class Fragment1 extends Fragment
                 new AlertDialog.Builder(context).setTitle("確認刪除").setMessage("是否刪除"+data.getGoodsPrice()+"鬧鐘").setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(context,"刪除"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,"刪除"+data.getGoodsPrice(),Toast.LENGTH_SHORT).show();
 //                       Toast.makeText(context,"刪除"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
-//                        SharedPreferences prefs =getApplication().getSharedPreferences("drug",Context.MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = prefs.edit();
-//                        int drug = prefs.getInt("can",0);
-//                        int plus = prefs.getInt("plus",1);
-//                        if(plus == 0){
-//                            drug-=1;
-//                        }
-//                        for(int i = data.index+1;i<Fragment1.inde;i++){
-//                            int will = goodsEntityList.get(i).getIndex()-1;
-//                            goodsEntityList.get(i).setIndex(will);
-//                        }
-//                        editor.putString("name"+Integer.toString(data.getPosition()),"null");
-//                        editor.commit();
-//                        Fragment1.inde-=1;
-//                        goodsEntityList.remove(data.index);
-//                        initRecyclerView();
-//                        initRecyclerView();
+                        SharedPreferences prefs =context.getSharedPreferences("drug",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        int drug = prefs.getInt("can",0);
+                        int plus = prefs.getInt("plus",1);
+                        if(plus == 0){
+                            drug-=1;
+                        }
+                        for(int i = data.index+1;i<Fragment1.inde;i++){
+                            int will = goodsEntityList.get(i).getIndex()-1;
+                            goodsEntityList.get(i).setIndex(will);
+                        }
+                        editor.putString("name"+Integer.toString(data.getPosition()),"null");
+                        editor.commit();
+                        Fragment1.inde-=1;
+                        Intent intent = new Intent(context, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,data.getPosition() , intent, 0);
+                        AlarmManager alarmManager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+                        alarmManager.cancel(pendingIntent);
+//                        mTextView.setText("鬧鈴已取消！");
+                        goodsEntityList.remove(data.index);
+                        initRecyclerView();
                     }
                 }).show();
 //                Toast.makeText(context,"我是"+data.getGoodsPrice()+data.getIndex(),Toast.LENGTH_SHORT).show();
