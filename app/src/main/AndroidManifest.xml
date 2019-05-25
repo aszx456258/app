@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.lee.hi">
 
     <application
@@ -10,11 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.example.lee.app.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.example.lee.app.add"
@@ -23,7 +20,24 @@
             android:name="com.example.lee.app.AlarmReceiver"
             android:process=":remote">
         </receiver>
+        <activity
+            android:name="com.example.lee.app.MainActivity2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.example.lee.app.login">
+
+        </activity>
+        <activity android:name="com.example.lee.app.Register">
+
+        </activity>
+        <activity android:name="com.example.lee.app.ShowData">
+
+        </activity>
+
     </application>
-
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

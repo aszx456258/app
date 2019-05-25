@@ -8,9 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
-import android.widget.TextView;
 
 import com.example.lee.hi.R;
 
@@ -91,11 +91,11 @@ public class MainActivity extends FragmentActivity implements
         //将xml布局转换为view对象
         View view = layoutInflater.inflate(R.layout.tab_content, null);
         //利用view对象，找到布局中的组件,并设置内容，然后返回视图
-//        ImageView mImageView = (ImageView) view
-//                .findViewById(R.id.tab_imageview);
-        TextView mTextView = (TextView) view.findViewById(R.id.tab_textview);
-//        mImageView.setBackgroundResource(imageViewArray[i]);
-        mTextView.setText(textViewArray[i]);
+        ImageView mImageView = (ImageView) view
+                .findViewById(R.id.tab_imageview);
+//        TextView mTextView = (TextView) view.findViewById(R.id.tab_textview);
+        mImageView.setBackgroundResource(imageViewArray[i]);
+//        mTextView.setText(textViewArray[i]);
         return view;
     }
 

@@ -8,13 +8,12 @@
 //import android.view.View;
 //import android.widget.Button;
 //import android.widget.EditText;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.Task;
-//import com.google.firebase.auth.AuthResult;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
 //
 //import com.example.lee.hi.R;
+//import com.google.android.gms.tasks.OnCompleteListener;
+//import com.google.android.gms.tasks.Task;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
 //
 //public class login extends AppCompatActivity {
 //
@@ -27,7 +26,7 @@
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.log_in);
 //
 //        findviewById();
 //
@@ -40,7 +39,7 @@
 //                if (user != null) {
 //                    // User is signed in
 //                    Log.d("TAG",user.getUid());
-//                    startActivity(new Intent(this,ShowData.class));
+////                    startActivity(new Intent(login.this,ShowData.class));
 //                } else {
 //                    // User is signed out
 //                    Log.d("Tag","user ==null");
@@ -56,18 +55,26 @@
 //            if (view.getId()==R.id.btnlogin){
 //                String email = edtemail.getText().toString();
 //                String password = edtpassword.getText().toString();
+//                Log.d("TAG",email);
+//                Log.d("TAG",password);
 //                mAuth.signInWithEmailAndPassword(email,password)
 //                        .addOnCompleteListener(new OnCompleteListener() {
 //                            @Override
 //                            public void onComplete(@NonNull Task task) {
-//                                if (task.isSuccessful()){
+//                                    if (task.isSuccessful()){
 //                                    Log.d("TAG","登入成功");
+//                                    Intent intent = new Intent();
+//                                    intent.setClass(login.this , MainActivity.class);
+//                                    startActivity(intent);
+//                                }
+//                                else{
+//                                    Log.d("TAG","登入失敗");
 //                                }
 //                            }
 //                        });
 //            }
 //            if (view.getId()==R.id.btnregister){
-//                startActivity(new Intent(this,Register.class));
+//                startActivity(new Intent(login.this,Register.class));
 //            }
 //        }
 //    };
