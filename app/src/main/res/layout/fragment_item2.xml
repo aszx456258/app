@@ -11,23 +11,13 @@
     <!--tools:context="com.example.and_sv.MainActivity" >-->
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="81dp"
-        android:gravity="center_vertical"
-        android:text="TAKE CARE OF YOU"
-        android:textColor="@android:color/background_dark"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/textView1"
         android:layout_width="match_parent"
-        android:layout_height="409dp"
+        android:layout_height="464dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@android:color/background_light"
-        android:layout_alignParentLeft="true" />
+        android:background="@android:color/background_light" />
 
     <LinearLayout
         android:layout_width="match_parent"

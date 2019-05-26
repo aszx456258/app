@@ -179,12 +179,13 @@ public class Fragment1 extends Fragment
 //        goodsEntity.setGoodsName("7:00");
 //        goodsEntity.setGoodsPrice("胃藥");
 //        goodsEntityList.add(goodsEntity);
+//        goodsEntityList.clear();
         SharedPreferences pref = this.getActivity().getSharedPreferences("drug",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         int drug = pref.getInt("can",0);
         Log.d("drug",Integer.toString(drug));
         int done = pref.getInt("do",0);
-        if(done == 0){
+        if(done == 0 && goodsEntityList.size()==0){
             int plus = pref.getInt("plus",1);
             if(plus==0){drug=drug-1;}
             for (int i =0;i<drug;i++){

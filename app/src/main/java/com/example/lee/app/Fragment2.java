@@ -110,8 +110,8 @@ public class Fragment2 extends Fragment
             InetAddress serverIp;
             try {
                 // 以內定(本機電腦端)IP為Server端
-                serverIp = InetAddress.getByName("192.168.1.102");
-                int serverPort = 5050;
+                serverIp = InetAddress.getByName("yozn.ml");
+                int serverPort = 2914;
                 clientSocket = new Socket(serverIp, serverPort);
 
                 // 取得網路輸入串流
