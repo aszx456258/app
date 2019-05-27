@@ -1,8 +1,11 @@
 package com.example.lee.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +29,8 @@ import java.net.Socket;
  */
 public class Fragment2 extends Fragment
 {
-    private EditText edtname,edttext;
-    private TextView textview1;
+    private EditText edttext;
+    private TextView textview1,edtname;
     private Button button1;
     String tmp;                // 暫存文字訊息
     Socket clientSocket;
@@ -37,12 +40,15 @@ public class Fragment2 extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item2, null);
-        edtname = (EditText)view.findViewById(R.id.edtname);
+        edtname = (TextView)view.findViewById(R.id.edtname);
         edttext = (EditText)view.findViewById(R.id.edttext);
         button1 = (Button)view.findViewById(R.id.button1);
         textview1 = (TextView)view.findViewById(R.id.textView1);
         button1.setOnClickListener(btnlistener);
+        SharedPreferences prefs =this.getActivity().getSharedPreferences("drug", Context.MODE_PRIVATE);
+        edtname.setText(prefs.getString("yourname",""));
         Thread t = new Thread(readData);
+        textview1.setMovementMethod(ScrollingMovementMethod.getInstance());
         // 啟動執行緒
         t.start();
         return view;
@@ -109,14 +115,15 @@ public class Fragment2 extends Fragment
             // server端的IP
             InetAddress serverIp;
             try {
-                // 以內定(本機電腦端)IP為Server端
-                serverIp = InetAddress.getByName("yozn.ml");
+                // 以內定(本機電腦端)IP為Server
+//                serverIp = InetAddress.getByName("yozn.ml");
+                serverIp = InetAddress.getByName("192.168.1.102");
                 int serverPort = 2914;
                 clientSocket = new Socket(serverIp, serverPort);
 
                 // 取得網路輸入串流
                 BufferedReader br = new BufferedReader(new InputStreamReader(
-                        clientSocket.getInputStream()));
+                        clientSocket.getInputStream(),"BIG5"));
 
                 // 當連線後
                 while (clientSocket.isConnected()) {

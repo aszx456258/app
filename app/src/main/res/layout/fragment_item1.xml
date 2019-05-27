@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="80dp"
         android:background="#07125c"
         android:orientation="horizontal">
 
@@ -20,7 +20,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="時間"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView4"
@@ -29,13 +31,15 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="藥"
-            android:textColor="@android:color/background_light" />
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/clock"
         android:layout_width="match_parent"
-        android:layout_height="390dp" />
+        android:layout_height="380dp" />
 
 
     <LinearLayout
@@ -52,11 +56,12 @@
 
         <Button
             android:id="@+id/add"
-            android:layout_width="120dp"
-            android:layout_height="90dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:background="@drawable/ic_add_black_24dp" />
+            android:background="@drawable/pllll"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

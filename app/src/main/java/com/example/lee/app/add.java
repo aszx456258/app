@@ -118,6 +118,9 @@ public class add extends Activity {
                 else if(medicines.equals("null")){
                     Toast.makeText(add.this,"還未設定藥物", Toast.LENGTH_SHORT).show();
                 }
+                else if(plus == 1){
+                    Toast.makeText(add.this,"還未設定時間", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         med.setOnClickListener(new View.OnClickListener() {
