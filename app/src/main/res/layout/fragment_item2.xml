@@ -15,27 +15,16 @@
         android:layout_height="77dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/edtname"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="24sp">
-
-        </TextView>
-
         <EditText
             android:id="@+id/edttext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/edtname"
-            android:layout_marginLeft="20dp"
             android:layout_toRightOf="@+id/edtname"
             android:layout_weight="1"
             android:backgroundTint="#000"
             android:ems="10"
-            android:textSize="24sp"></EditText>
+            android:textSize="18sp"></EditText>
 
         <Button
             android:id="@+id/button1"

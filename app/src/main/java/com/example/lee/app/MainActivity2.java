@@ -21,10 +21,17 @@ public class MainActivity2 extends Activity {
         super.onCreate(saveInstanceState);
         setContentView(R.layout.welcome);
         SharedPreferences prefs =getApplicationContext().getSharedPreferences("drug", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = prefs.edit();
         bt = (Button)findViewById(R.id.button2);
         edt = (EditText)findViewById(R.id.txv);
         edt.setText(prefs.getString("yourname","設置名稱"));
+        int my_first;
+        my_first = prefs.getInt("my_first",0);
+        if(my_first==1){
+            Intent intent = new Intent();
+            intent.setClass(MainActivity2.this, MainActivity.class);
+            startActivity(intent);
+        }
         bt.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -36,6 +43,7 @@ public class MainActivity2 extends Activity {
                         }
                         else {
                             editor.putString("yourname",edt.getText().toString());
+                            editor.putInt("my_first",1);
                             editor.commit();
                             Intent intent = new Intent();
                             intent.setClass(MainActivity2.this, MainActivity.class);

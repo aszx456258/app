@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lee.hi.R;
 
@@ -34,20 +35,23 @@ public class Fragment2 extends Fragment
     private Button button1;
     String tmp;                // 暫存文字訊息
     Socket clientSocket;
+    String name;
 
     public static Handler mHandler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item2, null);
-        edtname = (TextView)view.findViewById(R.id.edtname);
+//        edtname = (TextView)view.findViewById(R.id.edtname);
         edttext = (EditText)view.findViewById(R.id.edttext);
         button1 = (Button)view.findViewById(R.id.button1);
         textview1 = (TextView)view.findViewById(R.id.textView1);
         button1.setOnClickListener(btnlistener);
         SharedPreferences prefs =this.getActivity().getSharedPreferences("drug", Context.MODE_PRIVATE);
-        edtname.setText(prefs.getString("yourname",""));
+//        edtname.setText(prefs.getString("yourname",""));
+        name = prefs.getString("yourname","");
         Thread t = new Thread(readData);
+        edttext.setText("");
         textview1.setMovementMethod(ScrollingMovementMethod.getInstance());
         // 啟動執行緒
         t.start();
@@ -56,8 +60,11 @@ public class Fragment2 extends Fragment
     private View.OnClickListener btnlistener = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if(edttext.getText().length()==0){
+                Toast.makeText(getContext(),"還沒設定訊息", Toast.LENGTH_SHORT).show();
+            }
             // TODO Auto-generated method stub
-            if (clientSocket.isConnected()) {
+            else if (clientSocket.isConnected()) {
 //                BufferedWriter bw;
                 new Thread(new Runnable(){
                     PrintWriter pout = null;
@@ -72,7 +79,8 @@ public class Fragment2 extends Fragment
 //
 //                    // 立即發送
 //                    bw.flush();
-                            String msg = edtname.getText() + ":" + edttext.getText();
+//                            String msg = edtname.getText() + ":" + edttext.getText();
+                            String msg = name + ":" + edttext.getText();
                             pout = new PrintWriter(
                                     new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), "UTF-8")), true);
                             pout.println(msg);
